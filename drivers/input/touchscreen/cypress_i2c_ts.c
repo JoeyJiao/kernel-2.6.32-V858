@@ -509,7 +509,7 @@ static void cypress_ts_work_func(struct work_struct *work)
             {
                 CYPRESS_DEBUG("Touch_Area: touch release!! \n");
                 ts->is_first_point = true;
-                input_report_abs(ts->input_dev, ABS_PRESSURE, z);
+                input_report_abs(ts->input_dev, ABS_MT_PRESSURE, z);
                 input_report_abs(ts->input_dev, ABS_TOOL_WIDTH, z>>5);
                 input_report_key(ts->input_dev, BTN_TOUCH, 0);	
                 input_sync(ts->input_dev);
@@ -541,7 +541,7 @@ static void cypress_ts_work_func(struct work_struct *work)
                     {
                         CYPRESS_DEBUG("Touch_Area: touch release!! \n");
                         ts->is_first_point = true;
-                        input_report_abs(ts->input_dev, ABS_PRESSURE, z);
+                        input_report_abs(ts->input_dev, ABS_MT_PRESSURE, z);
                         input_report_abs(ts->input_dev, ABS_TOOL_WIDTH, w);
                         input_report_key(ts->input_dev, BTN_TOUCH, 0);
                         input_sync(ts->input_dev);
@@ -556,7 +556,7 @@ static void cypress_ts_work_func(struct work_struct *work)
 			input_report_abs(ts->input_dev, ABS_X, position[0][0]);
 			input_report_abs(ts->input_dev, ABS_Y, position[0][1]);
 		}
-		input_report_abs(ts->input_dev, ABS_PRESSURE, z);
+		input_report_abs(ts->input_dev, ABS_MT_PRESSURE, z);
 		input_report_abs(ts->input_dev, ABS_TOOL_WIDTH, z>>5);
 		input_report_key(ts->input_dev, BTN_TOUCH, 1);
 		
@@ -840,7 +840,7 @@ static int cypress_ts_probe(struct i2c_client *client, const struct i2c_device_i
 	set_bit(EV_ABS, ts->input_dev->evbit);
 	input_set_abs_params(ts->input_dev, ABS_X, 0, ts->x_max, 0, 0);
 	input_set_abs_params(ts->input_dev, ABS_Y, 0, ts->y_max, 0, 0);
-	input_set_abs_params(ts->input_dev, ABS_PRESSURE, 0, 255, 0, 0);
+	input_set_abs_params(ts->input_dev, ABS_MT_PRESSURE, 0, 255, 0, 0);
 	/*modify width reported max value*/
 	if(machine_is_msm7x25_c8600() )
 	{
