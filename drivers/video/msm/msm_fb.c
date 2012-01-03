@@ -179,7 +179,7 @@ static void msm_fb_set_bl_brightness(struct led_classdev *led_cdev,
 
 static struct led_classdev backlight_led = {
 	.name		= "lcd-backlight",
-	.brightness	= MAX_BACKLIGHT_BRIGHTNESS,
+	.brightness	= MAX_BACKLIGHT_BRIGHTNESS>>3,//minimize power on light to save battery
 	.brightness_set	= msm_fb_set_bl_brightness,
 };
 #endif
