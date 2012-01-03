@@ -46,8 +46,8 @@
 static struct workqueue_struct *gs_wq;
 static signed short st_sensor_data[3];
 
-#define ST303DLH_I2C_NAME "st_303dlh"
-#define ST303DLM_I2C_NAME "st_303dlm"
+#define ST303DLH_I2C_NAME "ST303DLH"
+#define ST303DLM_I2C_NAME "ST303DLM"
 
 enum
 {
