@@ -143,7 +143,17 @@ static int sdio_irq_thread(void *_host)
 
 	if (host->caps & MMC_CAP_SDIO_IRQ)
 		host->ops->enable_sdio_irq(host, 0);
-
+	if(machine_is_msm7x25_c8600()){
+/* ATHENV */
+           /* someone is trying to reclaim it? */ 
+           while (!kthread_should_stop()) { 
+                     pr_info("[%s]: [%d], wait for someone to reclaim\n", __func__, current->pid);
+                     set_current_state(TASK_INTERRUPTIBLE); 
+                     schedule_timeout(HZ); 
+                     set_current_state(TASK_RUNNING); 
+           } 
+/* ATHENV */
+	}
 	pr_debug("%s: IRQ thread exiting with code %d\n",
 		 mmc_hostname(host), ret);
 
