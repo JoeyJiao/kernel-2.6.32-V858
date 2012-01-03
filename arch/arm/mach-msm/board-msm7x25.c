@@ -3827,7 +3827,7 @@ lcd_panel_type lcd_panel_probe(void)
         hw_lcd_panel = LCD_ILI9325_INNOLUX_QVGA;
     }
     
-    printk(KERN_ERR "lcd_panel:*********hw_lcd_panel == %d;***************\n", hw_lcd_panel);
+    //printk(KERN_ERR "lcd_panel:*********hw_lcd_panel == %d;***************\n", hw_lcd_panel);
 
     return hw_lcd_panel;
 }
@@ -3953,7 +3953,10 @@ int board_surport_fingers(bool * is_surport_fingers)
 
     if( machine_is_msm7x25_u8500() || machine_is_msm7x25_um840() \
      || machine_is_msm7x25_u8350() || machine_is_msm7x25_u8130() \
-	 || machine_is_msm7x25_c8510() )
+	 || machine_is_msm7x25_c8510() || machine_is_msm7x25_u8160() \
+     || machine_is_msm7x25_c8500() || machine_is_msm7x25_c8600() \
+	 || machine_is_msm7x25_u8150() || machine_is_msm7x25_c8150() \
+	 || machine_is_msm7x25_m860())
     {
          *is_surport_fingers = true;
     }

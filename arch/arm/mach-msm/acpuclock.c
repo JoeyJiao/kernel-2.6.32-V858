@@ -17,6 +17,20 @@
  *
  */
 
+#define UNDERCLOCK_30720
+#define UNDERCLOCK_49152
+#define UNDERCLOCK_61440
+
+#define OVERCLOCK_614400
+#define OVERCLOCK_633600
+#define OVERCLOCK_652800
+#define OVERCLOCK_672000
+#define OVERCLOCK_691200
+#define OVERCLOCK_710400
+#define OVERCLOCK_729600
+#define OVERCLOCK_748800
+//#define OVERCLOCK_768000
+
 #include <linux/version.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -175,6 +189,15 @@ static struct clkctl_acpu_speed pll0_196_pll1_960_pll2_1056[] = {
 /* 7x27 normal with GSM capable modem */
 static struct clkctl_acpu_speed pll0_245_pll1_960_pll2_1200[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 19200, 0, 0, 30720 },
+#ifdef UNDERCLOCK_30720
+       { 1, 30720, ACPU_PLL_0, 4, 7,  15360, 1, 1,  30720 },
+#endif
+#ifdef UNDERCLOCK_49152
+       { 1, 49152, ACPU_PLL_0, 4, 4,  24576, 1, 2,  30720 },
+#endif
+#ifdef UNDERCLOCK_61440
+       { 1, 61440, ACPU_PLL_0, 4, 3,  30720, 1, 2,  30720 },
+#endif
 	{ 0, 120000, ACPU_PLL_1, 1, 7,  60000, 1, 3,  61440 },
 	{ 1, 122880, ACPU_PLL_0, 4, 1,  61440, 1, 3,  61440 },
 	{ 0, 200000, ACPU_PLL_2, 2, 5,  66667, 2, 4,  61440 },
@@ -183,6 +206,33 @@ static struct clkctl_acpu_speed pll0_245_pll1_960_pll2_1200[] = {
 	{ 0, 400000, ACPU_PLL_2, 2, 2, 133333, 2, 5, 122880 },
 	{ 1, 480000, ACPU_PLL_1, 1, 1, 160000, 2, 6, 122880 },
 	{ 1, 600000, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+#ifdef OVERCLOCK_614400
+         { 1, 614400, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_633600
+         { 1, 633600, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_652800
+         { 1, 652800, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_672000
+         { 1, 672000, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_691200
+         { 1, 691200, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_710400
+         { 1, 710400, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_729600
+         { 1, 729600, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+ #endif
+ #ifdef OVERCLOCK_748800
+        { 1, 748800, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+#endif
+#ifdef OVERCLOCK_768000
+	{ 1, 768000, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+#endif
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0, 0}, {0, 0, 0} }
 };
 
@@ -261,7 +311,7 @@ static struct pll_freq_tbl_map acpu_freq_tbl_list[] = {
 };
 
 #ifdef CONFIG_CPU_FREQ_MSM
-static struct cpufreq_frequency_table freq_table[20];
+static struct cpufreq_frequency_table freq_table[30];
 
 static void __init cpufreq_table_init(void)
 {
@@ -390,7 +440,7 @@ static int acpuclk_set_vdd_level(int vdd)
 
 /* Set proper dividers for the given clock speed. */
 static void acpuclk_set_div(const struct clkctl_acpu_speed *hunt_s) {
-	uint32_t reg_clkctl, reg_clksel, clk_div, src_sel;
+	uint32_t reg_clkctl, reg_clksel, clk_div, src_sel,a11_div;
 
 	reg_clksel = readl(A11S_CLK_SEL_ADDR);
 
@@ -398,6 +448,119 @@ static void acpuclk_set_div(const struct clkctl_acpu_speed *hunt_s) {
 	clk_div = (reg_clksel >> 1) & 0x03;
 	/* CLK_SEL_SRC1NO */
 	src_sel = reg_clksel & 1;
+
+	//add for overclocking
+	a11_div=hunt_s->a11clk_src_div;
+
+  if(hunt_s->a11clk_khz==576000) {
+
+    a11_div=0;
+
+    writel(0x1e, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==595200) {
+
+    a11_div=0;
+
+    writel(0x1f, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==614400) {
+
+    a11_div=0;
+
+    writel(0x20, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==633600) {
+
+    a11_div=0;
+
+    writel(0x21, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==652800) {
+
+    a11_div=0;
+
+    writel(0x22, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==672000) {
+
+    a11_div=0;
+
+    writel(0x23, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==691200) {
+
+    a11_div=0;
+
+    writel(0x24, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==710400) {
+
+    a11_div=0;
+
+    writel(0x25, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==729600) {
+
+    a11_div=0;
+
+    writel(0x26, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==748800) {
+
+    a11_div=0;
+
+    writel(0x27, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
+
+  if(hunt_s->a11clk_khz==768000) {
+
+    a11_div=0;
+
+    writel(0x28, MSM_CLK_CTL_BASE+0x33C);
+
+    udelay(50);
+
+  }
 
 	/*
 	 * If the new clock divider is higher than the previous, then
@@ -413,7 +576,7 @@ static void acpuclk_set_div(const struct clkctl_acpu_speed *hunt_s) {
 	reg_clkctl = readl(A11S_CLK_CNTL_ADDR);
 	reg_clkctl &= ~(0xFF << (8 * src_sel));
 	reg_clkctl |= hunt_s->a11clk_src_sel << (4 + 8 * src_sel);
-	reg_clkctl |= hunt_s->a11clk_src_div << (0 + 8 * src_sel);
+	reg_clkctl |= a11_div << (0 + 8 * src_sel);
 	writel(reg_clkctl, A11S_CLK_CNTL_ADDR);
 
 	/* Program clock source selection */
