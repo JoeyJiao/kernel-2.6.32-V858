@@ -660,10 +660,10 @@ static void usb_ept_start(struct msm_endpoint *ept)
 		}
 	}
 
-	if (!(readl(USB_ENDPTSTAT) & n))
+	/*if (!(readl(USB_ENDPTSTAT) & n))
 		pr_err("Unable to prime the ept%d%s\n",
 				ept->num,
-				ept->flags & EPT_FLAG_IN ? "in" : "out");
+				ept->flags & EPT_FLAG_IN ? "in" : "out");*/
 }
 
 int usb_ept_queue_xfer(struct msm_endpoint *ept, struct usb_request *_req)

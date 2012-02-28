@@ -188,7 +188,7 @@ static struct clkctl_acpu_speed pll0_196_pll1_960_pll2_1056[] = {
 
 /* 7x27 normal with GSM capable modem */
 static struct clkctl_acpu_speed pll0_245_pll1_960_pll2_1200[] = {
-	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 19200, 0, 0, 30720 },
+       { 0, 19200, ACPU_PLL_TCXO, 0, 0, 19200, 0, 0, 30720 },
 #ifdef UNDERCLOCK_30720
        { 1, 30720, ACPU_PLL_0, 4, 7,  15360, 1, 1,  30720 },
 #endif
@@ -231,7 +231,7 @@ static struct clkctl_acpu_speed pll0_245_pll1_960_pll2_1200[] = {
         { 1, 748800, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
 #endif
 #ifdef OVERCLOCK_768000
-	{ 1, 768000, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+	{ 1, 768000, ACPU_PLL_2, 2, 1, 200000, 2, 7, 200000 },
 #endif
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0, 0}, {0, 0, 0} }
 };
@@ -452,116 +452,12 @@ static void acpuclk_set_div(const struct clkctl_acpu_speed *hunt_s) {
 	//add for overclocking
 	a11_div=hunt_s->a11clk_src_div;
 
-  if(hunt_s->a11clk_khz==576000) {
-
-    a11_div=0;
-
-    writel(0x1e, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==595200) {
-
-    a11_div=0;
-
-    writel(0x1f, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==614400) {
-
-    a11_div=0;
-
-    writel(0x20, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==633600) {
-
-    a11_div=0;
-
-    writel(0x21, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==652800) {
-
-    a11_div=0;
-
-    writel(0x22, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==672000) {
-
-    a11_div=0;
-
-    writel(0x23, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==691200) {
-
-    a11_div=0;
-
-    writel(0x24, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==710400) {
-
-    a11_div=0;
-
-    writel(0x25, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==729600) {
-
-    a11_div=0;
-
-    writel(0x26, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==748800) {
-
-    a11_div=0;
-
-    writel(0x27, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
-  if(hunt_s->a11clk_khz==768000) {
-
-    a11_div=0;
-
-    writel(0x28, MSM_CLK_CTL_BASE+0x33C);
-
-    udelay(50);
-
-  }
-
+#define CUSTOM_FREQUENCY 537600
+	if(hunt_s->a11clk_khz > 600000 || hunt_s->a11clk_khz == CUSTOM_FREQUENCY){
+		a11_div=0;
+		writel(hunt_s->a11clk_khz/19200, MSM_CLK_CTL_BASE+0x33C);
+		udelay(50);
+	}	
 	/*
 	 * If the new clock divider is higher than the previous, then
 	 * program the divider before switching the clock
@@ -1061,6 +957,8 @@ void __init msm_acpu_clock_init(struct msm_acpu_clock_platform_data *clkdata)
 	precompute_stepping();
 	if (cpu_is_msm7x25())
 		msm7x25_acpu_pll_hw_bug_fix();
+	writel(55, MSM_CLK_CTL_BASE+0x320);
+	udelay(50);
 	acpuclk_init();
 	lpj_init();
 	print_acpu_freq_tbl();
