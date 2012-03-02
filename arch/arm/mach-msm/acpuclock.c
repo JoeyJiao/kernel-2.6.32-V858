@@ -29,7 +29,7 @@
 #define OVERCLOCK_710400
 #define OVERCLOCK_729600
 #define OVERCLOCK_748800
-//#define OVERCLOCK_768000
+#define OVERCLOCK_768000
 
 #include <linux/version.h>
 #include <linux/kernel.h>
