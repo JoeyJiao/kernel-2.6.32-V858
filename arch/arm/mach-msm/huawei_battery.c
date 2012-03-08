@@ -31,7 +31,7 @@
 
 #ifdef CONFIG_HUAWEI_BATTERY
 #define TRACE_BATT 1
-static int batt_debug_mask = 1;
+static int batt_debug_mask = 0;
 module_param_named(debug_mask, batt_debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP);
 
 #if defined(CONFIG_HUAWEI_KERNEL)
