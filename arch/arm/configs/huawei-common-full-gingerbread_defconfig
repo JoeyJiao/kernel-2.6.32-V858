@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.32.9
-# Wed Mar  7 22:13:05 2012
+# Thu Mar  8 09:24:30 2012
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -979,7 +979,7 @@ CONFIG_PROXIMITY_EVERLIGHT_APS_12D=y
 #
 CONFIG_SERIO=y
 CONFIG_SERIO_SERPORT=y
-CONFIG_SERIO_LIBPS2=y
+# CONFIG_SERIO_LIBPS2 is not set
 # CONFIG_SERIO_RAW is not set
 # CONFIG_GAMEPORT is not set
 
