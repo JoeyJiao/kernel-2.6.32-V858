@@ -1826,7 +1826,7 @@ static int __msm_release(struct msm_sync *sync)
 		wake_unlock(&sync->wake_lock);
 
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION
-        huawei_rpc_current_consuem_notify(EVENT_CAMERA_MODULE, DEVICE_POWER_STATE_OFF);
+        huawei_rpc_current_consume_notify(EVENT_CAMERA_MODULE, DEVICE_POWER_STATE_OFF);
 #endif
 
 		sync->apps_id = NULL;
@@ -2086,11 +2086,11 @@ static int __msm_open(struct msm_sync *sync, const char *const apps_id)
 
         if(sync->sdata->slave_sensor) 
         {   
-            huawei_rpc_current_consuem_notify(EVENT_IN_CAMERA, DEVICE_POWER_STATE_ON);
+            huawei_rpc_current_consume_notify(EVENT_IN_CAMERA, DEVICE_POWER_STATE_ON);
         }
         else  
         {
-            huawei_rpc_current_consuem_notify(EVENT_OUT_CAMERA, DEVICE_POWER_STATE_ON);
+            huawei_rpc_current_consume_notify(EVENT_OUT_CAMERA, DEVICE_POWER_STATE_ON);
         }
 #endif
 

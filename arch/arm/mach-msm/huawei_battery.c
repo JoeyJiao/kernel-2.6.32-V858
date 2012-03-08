@@ -31,7 +31,7 @@
 
 #ifdef CONFIG_HUAWEI_BATTERY
 #define TRACE_BATT 1
-static int batt_debug_mask = 0;
+static int batt_debug_mask = 1;
 module_param_named(debug_mask, batt_debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP);
 
 #if defined(CONFIG_HUAWEI_KERNEL)
@@ -59,7 +59,7 @@ module_param_named(debug_mask, batt_debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP
 #define RESUME_DELTA_LEVEL  1     /* define delta level in resume  */
 
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION
-#define HUAWEI_PROCEDURE_CONSUEM_CURRENT_NTIFY 4
+#define HUAWEI_PROCEDURE_CONSUME_CURRENT_NOTIFY 4
 #endif
 #define HUAWEI_BAT_DISP_FULL_LEVEL_VALUE 90
 
@@ -581,7 +581,7 @@ static struct device_attribute huawei_battery_attrs[] =
 };
 
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION
-int huawei_rpc_current_consuem_notify(device_current_consume_type device_event, __u32 device_state)
+int huawei_rpc_current_consume_notify(device_current_consume_type device_event, __u32 device_state)
 {
 	struct set_consume_notify_req {
 		struct rpc_request_hdr hdr;
@@ -596,7 +596,7 @@ int huawei_rpc_current_consuem_notify(device_current_consume_type device_event, 
         return 0;
     }
     BATT("%s: device_event= %d , device_state= %d \n",__FUNCTION__,device_event,device_state);
-	return msm_rpc_call(endpoint, HUAWEI_PROCEDURE_CONSUEM_CURRENT_NTIFY,
+	return msm_rpc_call(endpoint, HUAWEI_PROCEDURE_CONSUME_CURRENT_NOTIFY,
 			    &req, sizeof(req), 5 * HZ);
 }
 

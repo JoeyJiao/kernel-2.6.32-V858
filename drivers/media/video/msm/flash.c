@@ -95,7 +95,7 @@ static void flash_on(struct work_struct *work)
     {
         pmic_flash_led_set_current(FLASH_HIGH_DRIVE_CURRENT_MA);
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION        
-        huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, (FLASH_HIGH_DRIVE_CURRENT_MA/CAMERA_FLASH_CUR_DIV));
+        huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, (FLASH_HIGH_DRIVE_CURRENT_MA/CAMERA_FLASH_CUR_DIV));
 #endif
         flash_state = 1;
 		hrtimer_start(&flash_timer,
@@ -231,19 +231,19 @@ int32_t msm_camera_flash_set_led_state(unsigned led_state)
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION
 	switch (led_state) {
 	case MSM_CAMERA_LED_OFF:
-        huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, 0);
+        huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, 0);
 		break;
 #ifndef CONFIG_HUAWEI_CAMERA
 	case MSM_CAMERA_LED_LOW:
-        huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, (30/CAMERA_FLASH_CUR_DIV));
+        huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, (30/CAMERA_FLASH_CUR_DIV));
 		break;
 
 	case MSM_CAMERA_LED_HIGH:
-        huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, (100/CAMERA_FLASH_CUR_DIV));
+        huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, (100/CAMERA_FLASH_CUR_DIV));
 		break;
 #else
 	case MSM_CAMERA_LED_LOW:
-        huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, (FLASH_LOW_DRIVE_CURRENT_MA/CAMERA_FLASH_CUR_DIV));
+        huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, (FLASH_LOW_DRIVE_CURRENT_MA/CAMERA_FLASH_CUR_DIV));
 		break;
 
 	case MSM_CAMERA_LED_HIGH:

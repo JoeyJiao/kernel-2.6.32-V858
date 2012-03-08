@@ -26,7 +26,7 @@ typedef enum {
 #define DEVICE_POWER_STATE_ON 1
 
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION
-extern int huawei_rpc_current_consuem_notify(device_current_consume_type device_event, __u32 device_state );
+extern int huawei_rpc_current_consume_notify(device_current_consume_type device_event, __u32 device_state );
 #endif 
 
 

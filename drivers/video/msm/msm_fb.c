@@ -514,7 +514,7 @@ void msm_fb_set_backlight(struct msm_fb_data_type *mfd, __u32 bkl_lvl, u32 save)
 			pdata->set_backlight(mfd);
 
 #ifdef CONFIG_HUAWEI_EVALUATE_POWER_CONSUMPTION
-            huawei_rpc_current_consuem_notify(EVENT_LCD_BACKLIGHT, bkl_lvl);
+            huawei_rpc_current_consume_notify(EVENT_LCD_BACKLIGHT, bkl_lvl);
 #endif
 
 			if (!save)

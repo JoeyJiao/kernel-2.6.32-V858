@@ -214,7 +214,7 @@ static struct torch_fsm_entry torch_fsm_entry[] =
 static void torch_on()
 {
 	pmic_flash_led_set_current(TORCH_ON_CURRENT);
-	huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, (TORCH_ON_CURRENT/CAMERA_FLASH_CUR_DIV));
+	huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, (TORCH_ON_CURRENT/CAMERA_FLASH_CUR_DIV));
 
 	TORCH_DEBUG("torch.c:torch_on\n");
 }
@@ -222,7 +222,7 @@ static void torch_on()
 static void torch_off()
 {
 	pmic_flash_led_set_current(TORCH_OFF_CURRENT);
-	huawei_rpc_current_consuem_notify(EVENT_CAMERA_FLASH_NOTIFY, 0);
+	huawei_rpc_current_consume_notify(EVENT_CAMERA_FLASH_NOTIFY, 0);
 
 	TORCH_DEBUG("torch.c:torch_off\n");
 }
