@@ -836,7 +836,8 @@ struct clk msm_clocks_7x25[] = {
 	CLK_PCOM("sdc_pclk",	SDC4_P_CLK,	&msm_device_sdc4.dev, OFF),
 	CLK_PCOM("uart_clk",	UART1_CLK,	&msm_device_uart1.dev, OFF),
 	CLK_PCOM("uart_clk",	UART2_CLK,	&msm_device_uart2.dev, 0),
-	CLK_PCOM("uart_clk",	UART3_CLK,	&msm_device_uart3.dev, OFF),
+//	CLK_PCOM("uart_clk",	UART3_CLK,	&msm_device_uart3.dev, OFF),
+	CLK_PCOM("uart_clk",	UART3_CLK,	"msm_serial.2", OFF),
 	CLK_PCOM("uartdm_clk",	UART1DM_CLK,	&msm_device_uart_dm1.dev, OFF),
 	CLK_PCOM("uartdm_clk",	UART2DM_CLK,	&msm_device_uart_dm2.dev, 0),
 	CLK_PCOM("usb_hs_clk",	USB_HS_CLK,	NULL, OFF),
@@ -857,20 +858,15 @@ unsigned msm_num_clocks_7x25 = ARRAY_SIZE(msm_clocks_7x25);
  */
 int __init parse_tag_camera_id(const struct tag *tags)
 {
-    int camera_id = 0, find = 0;
+    int camera_id = 0;
 
 	struct tag *t = (struct tag *)tags;
 
 	for (; t->hdr.size; t = tag_next(t)) {
 		if (t->hdr.tag == ATAG_CAMERA_ID) {
-			printk(KERN_DEBUG "find the camera_id tag\n");
-			find = 1;
-			break;
+			return t->u.revision.rev;
 		}
 	}
-	if (find)
-		camera_id = t->u.revision.rev;
-	printk(KERN_DEBUG "%s: camera_id = 0x%x\n", __func__, camera_id);
 	return camera_id;
 }
 __tagtable(ATAG_CAMERA_ID, parse_tag_camera_id);
@@ -878,40 +874,29 @@ __tagtable(ATAG_CAMERA_ID, parse_tag_camera_id);
 #define ATAG_LCD_ID 0x4d534D73
 int __init parse_tag_lcd_id(const struct tag *tags)
 {
-    int lcd_id = 0, find = 0;
+    int lcd_id = 0;
 	struct tag *t = (struct tag *)tags;
 
 	for (; t->hdr.size; t = tag_next(t)) {
 		if (t->hdr.tag == ATAG_LCD_ID) {
-			printk(KERN_DEBUG "find the lcd_id tag\n");
-			find = 1;
-			break;
+			return t->u.revision.rev;
 		}
 	}
-	if (find)
-		lcd_id = t->u.revision.rev;
-	printk(KERN_DEBUG "%s: lcd_id = 0x%x\n", __func__, lcd_id);
 	return lcd_id;
-
 }
 __tagtable(ATAG_LCD_ID, parse_tag_lcd_id);
 
 #define ATAG_TS_ID 0x4d534D75
 int __init parse_tag_ts_id(const struct tag *tags)
 {
-    int ts_id = 0, find = 0;
+    int ts_id = 0;
 	struct tag *t = (struct tag *)tags;
 
 	for (; t->hdr.size; t = tag_next(t)) {
 		if (t->hdr.tag == ATAG_TS_ID) {
-			printk(KERN_DEBUG "find the ts_id tag\n");
-			find = 1;
-			break;
+			return t->u.revision.rev;
 		}
 	}
-	if (find)
-		ts_id = t->u.revision.rev;
-	printk(KERN_DEBUG "%s: ts_id = 0x%x\n", __func__, ts_id);
 	return ts_id;
 
 }
@@ -920,19 +905,14 @@ __tagtable(ATAG_TS_ID, parse_tag_ts_id);
 #define ATAG_SUB_BOARD_ID 0x4d534D76
 int __init parse_tag_sub_board_id(const struct tag *tags)
 {
-    int sub_board_id = 0, find = 0;
+    int sub_board_id = 0;
 	struct tag *t = (struct tag *)tags;
 
 	for (; t->hdr.size; t = tag_next(t)) {
 		if (t->hdr.tag == ATAG_SUB_BOARD_ID) {
-			printk(KERN_DEBUG "find the sub_board_id tag\n");
-			find = 1;
-			break;
+			return t->u.revision.rev;
 		}
 	}
-	if (find)
-		sub_board_id = t->u.revision.rev;
-	printk(KERN_DEBUG "%s: sub_board_id = 0x%x\n", __func__, sub_board_id);
 	return sub_board_id;
 
 }
@@ -943,21 +923,15 @@ __tagtable(ATAG_SUB_BOARD_ID, parse_tag_sub_board_id);
 #define ATAG_BOOT_MODE_ID   0x4d534d77
 int __init parse_tag_boot_mode_id(const struct tag *tags)
 {
-    int boot_mode_id = 0, find = 0;
+    int boot_mode_id = 0;
 	struct tag *t = (struct tag *)tags;
 
 	for (; t->hdr.size; t = tag_next(t)) {
 		if (t->hdr.tag == ATAG_BOOT_MODE_ID) {
-			printk(KERN_DEBUG "find the boot_mode_id tag\n");
-			find = 1;
-			break;
+			return t->u.revision.rev;
 		}
 	}
-	if (find)
-		boot_mode_id = t->u.revision.rev;
-	printk(KERN_DEBUG "%s: boot_mode_id = 0x%x\n", __func__, boot_mode_id);
 	return boot_mode_id;
-
 }
 __tagtable(ATAG_BOOT_MODE_ID, parse_tag_boot_mode_id);
 #endif
