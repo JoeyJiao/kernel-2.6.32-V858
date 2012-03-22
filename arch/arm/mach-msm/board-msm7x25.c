@@ -1126,7 +1126,6 @@ static int bluetooth_power(int on)
 
 	if (on) {
         config_gpio_table(bt_config_power_on,ARRAY_SIZE(bt_config_power_on));
-        return -EIO;
 
 #ifdef HUAWEI_BCM4329
         printk(KERN_DEBUG "bt power on for bcm4329");
@@ -1165,7 +1164,6 @@ static int bluetooth_power(int on)
         }
 #endif
         config_gpio_table(bt_config_power_off,ARRAY_SIZE(bt_config_power_off));
-        return -EIO;
 	}
 	return 0;
 }
