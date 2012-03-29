@@ -981,6 +981,7 @@ static struct platform_device msm_fb_device = {
 	}
 };
 
+#ifdef CONFIG_HUAWEI_SHARE_MEMORY_DEVICE
 static struct resource huawei_share_memory_resources[] = {
 	{
 		.flags  = IORESOURCE_MEM,
@@ -993,6 +994,7 @@ static struct platform_device huawei_share_memory_device = {
 	.num_resources  = ARRAY_SIZE(huawei_share_memory_resources),
 	.resource       = huawei_share_memory_resources,
 };
+#endif
 
 #ifdef CONFIG_HUAWEI_CRASH_DUMP
 static struct resource crash_dump_resources[] = {
@@ -2217,10 +2219,12 @@ static struct platform_device huawei_serial_device = {
 	.id		= -1,
 };
 
+#ifdef CONFIG_HUAWEI_HW_DEV_DCT
 static struct platform_device huawei_device_detect = {
 	.name = "hw-dev-detect",
 	.id		= -1,
 };
+#endif
 
 static struct platform_device *devices[] __initdata = {
 #ifndef HUAWEI_BCM4329
@@ -2228,7 +2232,7 @@ static struct platform_device *devices[] __initdata = {
 	&msm_wlan_ar6000,
 #endif
 #endif
-#if !defined(CONFIG_MSM_SERIAL_DEBUGGER)
+#if defined(CONFIG_MSM_SERIAL_DEBUGGER)
 	&msm_device_uart3,
 #endif
 	&msm_device_smd,
@@ -2249,7 +2253,7 @@ static struct platform_device *devices[] __initdata = {
 #endif
 	&msm_device_i2c,
 	//&smc91x_device,
-	&msm_device_tssc,
+	//&msm_device_tssc,
 	&android_pmem_kernel_ebi1_device,
 	&android_pmem_device,
 	&android_pmem_adsp_device,
@@ -2282,7 +2286,7 @@ static struct platform_device *devices[] __initdata = {
 #endif
 #ifdef CONFIG_HUAWEI_CAMERA_SENSOR_HIMAX0356	
 	&msm_camera_sensor_himax0356,
-#endif //CONFIG_HUAWEI_CAMERA_SENSOR_HIMAX0356
+#endif
 #ifdef CONFIG_MT9T013
 	&msm_camera_sensor_mt9t013_byd,
 #endif
@@ -2325,8 +2329,12 @@ static struct platform_device *devices[] __initdata = {
 #elif defined(CONFIG_HUAWEI_SMEM_SLEEP_LOG)
     &huawei_smem_sleep_log_device,
 #endif
+#ifdef CONFIG_HUAWEI_SHARE_MEMORY_DEVICE
 	&huawei_share_memory_device,
+#endif
+#ifdef CONFIG_huawei_device_detect
     &huawei_device_detect,
+#endif
 };
 
 static struct msm_panel_common_pdata mdp_pdata = {
@@ -2349,7 +2357,8 @@ static void __init msm7x2x_init_irq(void)
 
 static struct msm_acpu_clock_platform_data msm7x2x_clock_data = {
 	.acpu_switch_time_us = 50,
-	.max_speed_delta_khz = 256000,
+	.max_speed_delta_khz = 400000,
+	//.max_speed_delta_khz = 256000,
 	.vdd_switch_time_us = 62,
 	.max_axi_khz = 160000,
 };
@@ -3413,16 +3422,6 @@ static void __init msm7x2x_init(void)
 #ifdef CONFIG_HUAWEI_KERNEL
     virtualkeys_init();
 #endif
-    printk("JOEY print_all_gpio_none_zero_pin\n");
-    int i;
-    for(i=0;i<=132;i++) {
-        if(gpio_get_value(i)!=0) {
-            printk("GPIO%d=1  ",i);
-        }
-        if(i==132) {
-            printk("\n");
-        }
-    }
 }
 
 static unsigned pmem_kernel_ebi1_size = PMEM_KERNEL_EBI1_SIZE;

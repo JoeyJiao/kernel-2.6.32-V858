@@ -73,9 +73,7 @@ static void mdp_dma2_update_lcd(struct msm_fb_data_type *mfd)
 	uint32 ystride = mfd->fbi->fix.line_length;
 #ifdef CONFIG_HUAWEI_KERNEL
     lcd_align_type lcd_align = LCD_PANEL_ALIGN_LSB;
-
     lcd_align =  lcd_align_probe();       
-
     if (lcd_align == LCD_PANEL_ALIGN_MSB)
     {
          dma2_cfg_reg = DMA_PACK_TIGHT | DMA_PACK_ALIGN_MSB |

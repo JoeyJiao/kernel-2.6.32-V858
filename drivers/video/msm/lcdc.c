@@ -37,10 +37,8 @@
 #include <mach/msm_reqs.h>
 
 #include "msm_fb.h"
-#ifdef CONFIG_HUAWEI_KERNEL
-#include <linux/hardware_self_adapt.h>
-#endif
 
+#include <linux/hardware_self_adapt.h>
 
 static int lcdc_probe(struct platform_device *pdev);
 static int lcdc_remove(struct platform_device *pdev);
@@ -53,18 +51,6 @@ static int pdev_list_cnt;
 
 static struct clk *pixel_mdp_clk; /* drives the lcdc block in mdp */
 static struct clk *pixel_lcdc_clk; /* drives the lcdc interface */
-
-#ifdef CONFIG_HUAWEI_KERNEL
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
-
-#endif
-
 
 static struct platform_driver lcdc_driver = {
 	.probe = lcdc_probe,
@@ -103,10 +89,7 @@ static int lcdc_off(struct platform_device *pdev)
 static int lcdc_on(struct platform_device *pdev)
 {
 	int ret = 0;
-#ifdef CONFIG_HUAWEI_KERNEL
-	static char lcdc_on_first = TRUE;
-#endif
-	
+	static bool lcdc_on_first = true;
 	struct msm_fb_data_type *mfd;
 	unsigned long panel_pixclock_freq, pm_qos_rate;
 
@@ -116,8 +99,7 @@ static int lcdc_on(struct platform_device *pdev)
 #ifdef CONFIG_MSM_NPA_SYSTEM_BUS
 	pm_qos_rate = MSM_AXI_FLOW_MDP_LCDC_WVGA_2BPP;
 #else
-	/* delete 58MHz */
-	if (panel_pixclock_freq > 65000000)	/* 65MHz */
+	if (panel_pixclock_freq > 65000000)
 		/* pm_qos_rate should be in Khz */
 		pm_qos_rate = panel_pixclock_freq / 1000 ;
 	else
@@ -127,15 +109,15 @@ static int lcdc_on(struct platform_device *pdev)
 	pm_qos_update_requirement(PM_QOS_SYSTEM_BUS_FREQ , "lcdc",
 				  pm_qos_rate);
 	mfd = platform_get_drvdata(pdev);
-
-#ifdef CONFIG_HUAWEI_KERNEL
-	if ((LCD_ILI9481D_INNOLUX_HVGA   != lcd_panel_probe())\
-	   && (LCD_ILI9481DS_TIANMA_HVGA != lcd_panel_probe()))
+#ifdef CONFIG_MACH_MSM7X25
+	lcd_panel_type lcd_panel= lcd_panel_probe();
+	if ((LCD_ILI9481D_INNOLUX_HVGA   != lcd_panel)\
+	   && (LCD_ILI9481DS_TIANMA_HVGA != lcd_panel))
 	{
-		lcdc_on_first = FALSE;
+		lcdc_on_first = false;
 	}
 	
-	if (lcdc_on_first == FALSE)//does not configure lcd pclk for first time display
+	if (lcdc_on_first == false)//does not configure lcd pclk for first time display
 	{
 		ret = clk_set_rate(pixel_mdp_clk, mfd->fbi->var.pixclock);
 		if (ret) {
@@ -146,7 +128,7 @@ static int lcdc_on(struct platform_device *pdev)
 	}
 	else
 	{
-		lcdc_on_first = FALSE;
+		lcdc_on_first = false;
 	}
 #else
 	ret = clk_set_rate(pixel_mdp_clk, mfd->fbi->var.pixclock);
@@ -155,7 +137,6 @@ static int lcdc_on(struct platform_device *pdev)
 			__func__, mfd->fbi->var.pixclock);
 		goto out;
 	}
-
 #endif
 
 	clk_enable(pixel_mdp_clk);
@@ -231,9 +212,9 @@ static int lcdc_probe(struct platform_device *pdev)
 
 #ifdef MSMFB_FRAMEBUF_32
 	if (mfd->index == 0)
-		mfd->fb_imgType = MDP_RGBA_8888; /* primary */
+		mfd->fb_imgType = MDP_RGBA_8888; // primary
 	else
-		mfd->fb_imgType = MDP_RGB_565;	/* secondary */
+		mfd->fb_imgType = MDP_RGB_565;	// secondary
 #else
 	mfd->fb_imgType = MDP_RGB_565;
 #endif

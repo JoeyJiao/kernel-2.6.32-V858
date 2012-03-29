@@ -62,7 +62,7 @@ extern uint32 mdp_intr_mask;
 int first_pixel_start_x;
 int first_pixel_start_y;
 
-int   lcdc_polarity_set(void)
+int lcdc_polarity_set(void)
 {
     int hsync_polarity;
     int vsync_polarity;
@@ -70,14 +70,11 @@ int   lcdc_polarity_set(void)
     int ctrl_polarity;
 
     lcd_panel_type  hw_lcd_panel = LCD_NONE;
-
     hw_lcd_panel = lcd_panel_probe();
-     
     if(hw_lcd_panel == LCD_S6D74A0_SAMSUNG_HVGA)     
     {               
         hsync_polarity = 1;
         vsync_polarity =  1;
-
     }
     else
     {
@@ -87,9 +84,7 @@ int   lcdc_polarity_set(void)
     data_en_polarity = 0;
     ctrl_polarity =
 	    (data_en_polarity << 2) | (vsync_polarity << 1) | (hsync_polarity);
-   
     return ctrl_polarity;
-
 }
 
 int mdp_lcdc_on(struct platform_device *pdev)
@@ -297,7 +292,6 @@ int mdp_lcdc_on(struct platform_device *pdev)
 	    (data_en_polarity << 2) | (vsync_polarity << 1) | (hsync_polarity);
 #else
 	ctrl_polarity = lcdc_polarity_set();
-
 #endif
 
 	MDP_OUTP(MDP_BASE + timer_base + 0x4, hsync_ctrl);

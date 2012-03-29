@@ -103,10 +103,11 @@ obj-y += lcdc_ili9481d_hvga.o
 obj-y += lcdc_hx8357b_hvga.o
 obj-y += lcdc_hx8368a_qvga.o
 obj-y += huawei_backlight.o
-endif
 obj-y += lcdc_hx8357a_hvga.o
 obj-y += lcdc_s6d05a0_hvga.o
 obj-y += lcd_hw_debug.o
+endif
+
 obj-$(CONFIG_FB_MSM_TVOUT_NTSC) += tv_ntsc.o
 obj-$(CONFIG_FB_MSM_TVOUT_PAL) += tv_pal.o
 

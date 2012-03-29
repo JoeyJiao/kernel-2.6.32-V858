@@ -249,9 +249,9 @@ static int msm_fb_probe(struct platform_device *pdev)
 
 	mfd->panel_info.frame_count = 0;
 #ifdef CONFIG_HUAWEI_KERNEL
-    mfd->bl_level = LCD_DEFAULT_BK_LEV;
+    mfd->bl_level = LCD_DEFAULT_BK_LEV>>2;
 #else
-	mfd->bl_level = mfd->panel_info.bl_max;
+	mfd->bl_level = mfd->panel_info.bl_max>>3;
 #endif
 
 #ifdef CONFIG_FB_MSM_OVERLAY
