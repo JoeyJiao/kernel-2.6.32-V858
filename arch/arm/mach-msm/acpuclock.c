@@ -222,7 +222,8 @@ static struct clkctl_acpu_speed pll0_245_pll1_960_pll2_1200[] = {
          { 1, 691200, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
  #endif
  #ifdef OVERCLOCK_710400
-         { 1, 710400, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+         //{ 1, 710400, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },
+         { 1, 710400, ACPU_PLL_2, 2, 1, 200000, 2, 7, 200000 },
  #endif
  #ifdef OVERCLOCK_729600
          { 1, 729600, ACPU_PLL_2, 2, 1, 200000, 2, 7, 122880 },

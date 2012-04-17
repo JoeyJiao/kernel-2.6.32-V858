@@ -15,6 +15,7 @@
  */
 
 #include <linux/kernel.h>
+#include <linux/gpio.h>
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/input.h>
@@ -38,7 +39,6 @@
 #include <asm/mach/mmc.h>
 #include <mach/vreg.h>
 #include <mach/mpp.h>
-#include <mach/gpio.h>
 #include <mach/board.h>
 #include <mach/msm_iomap.h>
 #include <mach/msm_rpcrouter.h>
@@ -63,10 +63,7 @@
 #include "socinfo.h"
 #include "clock.h"
 #include "msm-keypad-devices.h"
-#include "linux/hardware_self_adapt.h"
-#ifdef CONFIG_USB_ANDROID
-#include <linux/usb/android.h>
-#endif
+#include <linux/hardware_self_adapt.h>
 #include "pm.h"
 #ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI_TM1319
 #include <linux/synaptics_i2c_rmi.h>
@@ -82,7 +79,6 @@
 #ifdef CONFIG_HUAWEI_JOGBALL
 #include "jogball_device.h"
 #endif
-
 #ifdef CONFIG_ARCH_MSM7X27
 #include <linux/msm_kgsl.h>
 #endif
@@ -91,6 +87,9 @@
 #include <linux/wifi_tiwlan.h>
 #include <linux/skbuff.h>
 #endif
+#endif
+#ifdef CONFIG_USB_ANDROID
+#include <linux/usb/android.h>
 #endif
 
 #ifdef CONFIG_USB_AUTO_INSTALL
@@ -138,11 +137,8 @@ static unsigned int ts_id = 0;
 static unsigned int sub_board_id = 0;
 
 #ifdef CONFIG_ARCH_MSM7X25
-
 #define MSM_PMEM_MDP_SIZE	0xb21000
-
 #define MSM_PMEM_ADSP_SIZE	0xc00000
-
 /*now crash dump is used for SMEM log to catch sleep log of ARM9 side*/
 #ifdef CONFIG_HUAWEI_CRASH_DUMP
 #define HUAWEI_CRASH_MEM_SIZE   (600*1024) //600K size
@@ -150,7 +146,6 @@ static unsigned int sub_board_id = 0;
 #define HUAWEI_SMEM_SLEEP_LOG_SIZE   (600*1024) //600K size
 #endif
 #define HUAWEI_SHARE_MEMORY_SIZE (424*1024) //424K
-
 #define MSM_FB_SIZE		0x200000
 //#define MSM_FB_SIZE		0x100000
 #define PMEM_KERNEL_EBI1_SIZE	0x80000
@@ -351,23 +346,20 @@ static struct usb_composition usb_func_composition[] = {
 static struct android_usb_platform_data android_usb_pdata = {
 #ifdef CONFIG_USB_AUTO_INSTALL
 	.vendor_id	= HUAWEI_VID,
-/* < google_usb_drv */	
-//	.vendor_id	= 0x18D1, /* 0x05C6, */
-/* google_usb_drv > */	
+//	.vendor_id	= 0x18D1,
 #else	
 	.vendor_id	= 0x05C6,
-#endif  /* CONFIG_USB_AUTO_INSTALL */
+#endif
 	.version	= 0x0100,
 	.compositions   = usb_func_composition,
 	.num_compositions = ARRAY_SIZE(usb_func_composition),
-/* add new pid config for google */
 #ifdef CONFIG_USB_AUTO_INSTALL
 	.product_name	= "Ideos",
 	.manufacturer_name = "Huawei Incorporated",
 #else	
 	.product_name	= "Qualcomm HSUSB Device",
 	.manufacturer_name = "Qualcomm Incorporated",
-#endif  /* CONFIG_USB_AUTO_INSTALL */
+#endif
 	.nluns = 1,
 };
 
